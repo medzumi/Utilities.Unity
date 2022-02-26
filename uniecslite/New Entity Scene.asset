@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1471fbe2a883a8c469111a1d7d016388, type: 3}
-  m_Name: 
+  m_Name: New Entity Scene
   m_EditorClassIdentifier: 
   _entities: []
   references:

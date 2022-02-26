@@ -15,11 +15,9 @@ namespace ApplicationScripts.Ecs.Unity
         public override void Convert(int entity, EcsWorld world)
         {
             var pool = world.GetPool<T>();
-            var pool2 = world.GetPool<ComponentUpdated<T>>();
             if (!pool.Has(entity))
             {
                 pool.Add(entity) = _component;
-                pool2.Ensure(entity);
             }
         }
     }

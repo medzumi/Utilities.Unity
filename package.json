@@ -1,0 +1,14 @@
+{
+    "name": "leoext",
+    "author": "medzumi",
+    "displayName": "leoext",
+    "unity": "2020.3",
+    "version": "0.0.1",
+    "keywords": [
+        "leoecslite",
+        "leoecs",
+        "ecs",
+        "performance"
+    ],
+    "dependencies": {}
+}
