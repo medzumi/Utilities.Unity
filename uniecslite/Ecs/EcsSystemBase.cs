@@ -28,19 +28,43 @@ namespace ApplicationScripts.Ecs
 
     public class EncapsulateSystemCollection : EcsSystemBase
     {
+        protected readonly SystemCollection _systemCollection = new SystemCollection();
+
+        public override void PreInit(EcsSystems systems)
+        {
+            base.PreInit(systems);
+            _systemCollection.PreInit(systems);
+        }
+
+        public override void Init(EcsSystems systems)
+        {
+            base.Init(systems);
+            _systemCollection.Init(systems);
+        }
+
+        public override void Run(EcsSystems systems)
+        {
+            base.Run(systems);
+            _systemCollection.Run(systems);
+        }
+
+        public override void Destroy(EcsSystems systems)
+        {
+            base.Destroy(systems);
+            _systemCollection.Destroy(systems);
+        }
+
+        public override void PostDestroy(EcsSystems systems)
+        {
+            base.PostDestroy(systems);
+            _systemCollection.PostDestroy(systems);
+        }
+    }
+    
+    public class SystemCollection : EcsSystemBase, IEcsSystems
+    {
         private readonly List<IEcsSystem> _systems = new List<IEcsSystem>();
         private readonly List<IEcsRunSystem> _runSystems = new List<IEcsRunSystem>();
-
-        protected EncapsulateSystemCollection ProtectedAdd(IEcsSystem system)
-        {
-            _systems.Add(system);
-            if (system is IEcsRunSystem runSystem)
-            {
-                _runSystems.Add(runSystem);
-            }
-
-            return this;
-        }
 
         public override void PreInit(EcsSystems systems)
         {
@@ -71,13 +95,15 @@ namespace ApplicationScripts.Ecs
             base.PostDestroy(systems);
             _systems.PostDestroyBindly(systems);
         }
-    }
-    
-    public class SystemCollection : EncapsulateSystemCollection
-    {
-        public SystemCollection Add(IEcsSystem system)
+
+        public IEcsSystems Add(IEcsSystem system)
         {
-            ProtectedAdd(system);
+            _systems.Add(system);
+            if (system is IEcsRunSystem runSystem)
+            {
+                _runSystems.Add(runSystem);
+            }
+
             return this;
         }
     }

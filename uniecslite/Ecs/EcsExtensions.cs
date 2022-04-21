@@ -65,7 +65,7 @@ namespace ApplicationScripts.Ecs
             return false;
         }
         
-        public struct SystemCollectionConfigurator<TSystem> where TSystem : SystemCollection
+        public struct SystemCollectionConfigurator<TSystem> where TSystem : IEcsSystems
         {
             private readonly TSystem _collection;
 
@@ -85,14 +85,20 @@ namespace ApplicationScripts.Ecs
                 return _collection;
             }
         }
-        public static SystemCollectionConfigurator<T> StartConfigure<T>(this T system) where T : SystemCollection
+        public static SystemCollectionConfigurator<T> StartConfigure<T>(this T system) where T : IEcsSystems
         {
             return new SystemCollectionConfigurator<T>(system);
         }
 
-        public static EcsSystems Add<TSystem>(this EcsSystems systems) where TSystem : IEcsSystem, new()
+        public static IEcsSystems Add<TSystem>(this IEcsSystems systems) where TSystem : IEcsSystem, new()
         {
             systems.Add(new TSystem());
+            return systems;
+        }
+
+        public static IEcsSystems Add(this IEcsSystems systems, IEcsSystem system)
+        {
+            systems.Add(system);
             return systems;
         }
 
