@@ -1,14 +1,14 @@
 {
-    "name": "leoext",
-    "author": "medzumi",
-    "displayName": "leoext",
+    "name": "com.medzumi.utilities.unity",
+    "author": "Medzumi",
+    "displayName": "Utilities.Unity",
     "unity": "2020.3",
-    "version": "0.0.1",
-    "keywords": [
-        "leoecslite",
-        "leoecs",
-        "ecs",
-        "performance"
-    ],
-    "dependencies": {}
+    "version": "1.0.0",
+    "dependencies": {
+        "com.medzumi.utilities" : "1.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/medzumi/Utilities.Unity.git"
+    }
 }
