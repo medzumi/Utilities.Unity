@@ -1,0 +1,16 @@
+{
+    "name": "Utilities.Unity",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3e1056c770db61849b9836e111b63ca9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
