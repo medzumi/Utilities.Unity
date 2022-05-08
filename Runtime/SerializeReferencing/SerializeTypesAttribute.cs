@@ -7,6 +7,11 @@ namespace Utilities.SerializeReferencing
     {
         public readonly Type InheritType;
 
+        public SerializeTypesAttribute()
+        {
+            InheritType = null;
+        }
+        
         public SerializeTypesAttribute(Type inheritType)
         {
             InheritType = inheritType;

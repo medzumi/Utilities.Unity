@@ -40,6 +40,11 @@ namespace Utilities.SerializeReferencing.Editor
             {
                 var attr = attribute as SerializeTypesAttribute;
                 var baseType = attr.InheritType;
+                if (baseType.IsNull())
+                {
+                    baseType = Type.GetType(property.managedReferenceFieldTypename);
+                }
+
                 IEnumerable<Type> typeLinq = AppDomain.CurrentDomain
                     .GetAssemblies()
                     .SelectMany(assembly => assembly.GetTypes());
