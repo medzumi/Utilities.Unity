@@ -42,6 +42,7 @@ namespace Utilities.SerializeReferencing.Editor
                 var baseType = attr.InheritType;
                 if (baseType.IsNull())
                 {
+                    //ToDo : fix me please
                     baseType = Type.GetType(property.managedReferenceFieldTypename);
                 }
 
