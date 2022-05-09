@@ -2,9 +2,10 @@
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using Utilities.Unity.Buttons;
 using Object = UnityEngine.Object;
 
-namespace ApplicationScripts.Unity.Editor
+namespace Utilities.Unity.Editor.Buttons
 {
     [CustomEditor(typeof(Object), true)]
     public class ButtonDrawer : UnityEditor.Editor

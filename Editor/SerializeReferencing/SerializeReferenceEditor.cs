@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ApplicationScripts.CodeExtensions;
 using UnityEditor;
 using UnityEngine;
+using Utilities.CodeExtensions;
+using Utilities.Unity.SerializeReferencing;
 
-namespace Utilities.SerializeReferencing.Editor
+namespace Utilities.Unity.Editor.SerializeReferencing
 {
     [CustomPropertyDrawer(typeof(SerializeTypesAttribute), true)]
     public class SerializeReferenceEditor : PropertyDrawer

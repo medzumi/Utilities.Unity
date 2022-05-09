@@ -2,8 +2,9 @@
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
+using Utilities.Unity.StringLibrary;
 
-namespace Utilities.StringLibrary.Editor
+namespace Utilities.Unity.Editor.StringLibrary
 {
     [CustomPropertyDrawer(typeof(StringLibraryAttribute))]
     public class StringLibraryDrawer : PropertyDrawer

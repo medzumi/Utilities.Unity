@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Packages.Utilities.Unity.Runtime.ScriptableSingletone
+namespace Utilities.Unity.ScriptableSingletone
 {
     public class RuntimeScriptableSingletoneSettings : RuntimeScriptableSingletone<RuntimeScriptableSingletoneSettings>
     {

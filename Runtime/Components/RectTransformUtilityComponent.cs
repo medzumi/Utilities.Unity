@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace Components
+namespace Utilities.Unity.Components
 {
     [RequireComponent(typeof(RectTransform))]
     public class RectTransformUtilityComponent : MonoBehaviour

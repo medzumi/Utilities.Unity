@@ -1,6 +1,6 @@
 {
     "name": "Utilities.Unity.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "Utilities.Unity",
     "references": [
         "Utilities.Unity",
         "Utilities"

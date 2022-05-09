@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Utilities.SerializeReferencing
+namespace Utilities.Unity.SerializeReferencing
 {
     public class SerializeTypesAttribute : PropertyAttribute
     {

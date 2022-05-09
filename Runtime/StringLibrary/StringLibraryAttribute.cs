@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Utilities.StringLibrary
+namespace Utilities.Unity.StringLibrary
 {
     public class StringLibraryAttribute : PropertyAttribute
     {

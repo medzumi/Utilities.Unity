@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ApplicationScripts.Unity
+namespace Utilities.Unity.Buttons
 {
     public class ButtonAttribute : Attribute
     {

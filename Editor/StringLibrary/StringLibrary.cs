@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Utilities.StringLibrary.Editor
+namespace Utilities.Unity.Editor.StringLibrary
 {
     [FilePath("ProjectSettings/StringLibrary.asset", FilePathAttribute.Location.ProjectFolder)]
     internal class StringLibrary : ScriptableSingleton<StringLibrary>

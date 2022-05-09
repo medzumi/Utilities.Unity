@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Utilities.SerializeReferencing.Editor
+namespace Utilities.Unity.Editor.SerializeReferencing
 {
     [CustomPropertyDrawer(typeof(object), true)]
     [Obsolete("Doesn't work. It's magic")]

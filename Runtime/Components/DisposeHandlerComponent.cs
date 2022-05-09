@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Components
+namespace Utilities.Unity.Components
 {
     public class DisposeHandlerComponent : MonoBehaviour, IDisposeHandler, IDisposable
     {

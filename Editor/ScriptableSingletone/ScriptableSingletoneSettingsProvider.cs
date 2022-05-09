@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Packages.Utilities.Unity.Runtime.ScriptableSingletone;
 using UnityEditor;
+using Utilities.Unity.ScriptableSingletone;
 
-namespace Packages.Utilities.Unity.Editor.ScriptableSingletone
+namespace Utilities.Unity.Editor.ScriptableSingletone
 {
     public class ScriptableSingletoneSettingsProvider : SettingsProvider
     {

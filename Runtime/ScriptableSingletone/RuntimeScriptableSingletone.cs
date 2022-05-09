@@ -2,7 +2,7 @@
 using System.Reflection;
 using UnityEngine;
 
-namespace Packages.Utilities.Unity.Runtime.ScriptableSingletone
+namespace Utilities.Unity.ScriptableSingletone
 {
     public class RuntimeScriptableSingletone<T> : ScriptableObject where T : RuntimeScriptableSingletone<T>
     {

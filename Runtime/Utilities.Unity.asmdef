@@ -1,6 +1,6 @@
 {
     "name": "Utilities.Unity",
-    "rootNamespace": "",
+    "rootNamespace": "Utilities.Unity",
     "references": [
         "Utilities"
     ],
