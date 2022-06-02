@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using Utilities.CodeExtensions;
 using Utilities.Unity.SerializeReferencing;
+using Object = UnityEngine.Object;
 
 namespace Utilities.Unity.Editor.SerializeReferencing
 {
@@ -50,16 +51,17 @@ namespace Utilities.Unity.Editor.SerializeReferencing
                 IEnumerable<Type> typeLinq = AppDomain.CurrentDomain
                     .GetAssemblies()
                     .SelectMany(assembly => assembly.GetTypes());
+                var uObjType = typeof(Object);
                 if (baseType.IsInterface)
                 {
                     typeLinq = typeLinq
-                        .Where(type => baseType.IsAssignableFrom(type) && !type.IsGenericType && !type.IsAbstract)
+                        .Where(type => baseType.IsAssignableFrom(type) && !type.IsGenericType && !type.IsAbstract && !uObjType.IsAssignableFrom(type))
                         .ToArray();
                 }
                 else
                 {
                     typeLinq = typeLinq
-                        .Where(type => type.CheckSelfOrBaseType(baseType));
+                        .Where(type => baseType.IsAssignableFrom(type) && !uObjType.IsAssignableFrom(type));
                 }
                 _keys = typeLinq.Select(type => type.FullName.Replace('.', '/'))
                     .ToArray();

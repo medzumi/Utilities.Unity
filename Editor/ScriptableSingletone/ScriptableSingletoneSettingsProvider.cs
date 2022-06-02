@@ -21,12 +21,18 @@ namespace Utilities.Unity.Editor.ScriptableSingletone
 
         public ScriptableSingletoneSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) : base(path, scopes, keywords)
         {
-            _editor = UnityEditor.Editor.CreateEditor(RuntimeScriptableSingletoneSettings.instance);
+            Initialize();
+        }
+
+        private async void Initialize()
+        {
+            _editor = UnityEditor.Editor.CreateEditor(await RuntimeScriptableSingletoneSettings.GetInstanceAsync());
         }
 
         public override void OnGUI(string searchContext)
         {
-            _editor.OnInspectorGUI();
+            if(_editor)
+                _editor.OnInspectorGUI();
         }
     }
 }
