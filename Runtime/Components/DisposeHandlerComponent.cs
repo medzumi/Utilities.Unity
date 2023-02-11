@@ -1,4 +1,5 @@
 using System;
+using medzumi.Utilities;
 using UnityEngine;
 
 namespace Utilities.Unity.Components
@@ -12,9 +13,9 @@ namespace Utilities.Unity.Components
             _disposeHandler.Reset();
         }
 
-        public void Subscribe(IDisposable disposable)
+        public void OnStop(IDisposable disposable)
         {
-            _disposeHandler.Subscribe(disposable);
+            _disposeHandler.OnStop(disposable);
         }
 
         public void Dispose()
