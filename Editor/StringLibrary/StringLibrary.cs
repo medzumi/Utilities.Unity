@@ -8,7 +8,7 @@ namespace Utilities.Unity.Editor.StringLibrary
     [FilePath("ProjectSettings/StringLibrary.asset", FilePathAttribute.Location.ProjectFolder)]
     internal class StringLibrary : ScriptableSingleton<StringLibrary>
     {
-        public List<string> _strings;
+        public List<string> _strings = new List<string>();
 
         public List<string> Strings => _strings;
 

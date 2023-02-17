@@ -10,6 +10,39 @@ namespace Utilities.Unity.Editor.StringLibrary
     public class StringLibraryDrawer : PropertyDrawer
     {
         private static List<string> _buffer = new List<string>();
+        private static GenericMenu _genericMenu;
+
+        private static GenericMenu GenericMenu
+        {
+            get
+            {
+                if (_genericMenu == null || _genericMenu.GetItemCount() + 1 != StringLibrary.instance.Strings.Count)
+                {
+                    _genericMenu = new GenericMenu();
+                    foreach (var VARIABLE in StringLibrary.instance.Strings)
+                    {
+                        _genericMenu.AddItem(new GUIContent(VARIABLE), false, () =>
+                        {
+                            var regex = (_activeAttribute as StringLibraryAttribute).RegexReplace;
+                            var replace = (_activeAttribute as StringLibraryAttribute).Replace;
+                            _activeProperty.stringValue = Regex.Replace(VARIABLE, regex, replace);
+                            _activeProperty.serializedObject.ApplyModifiedProperties();
+                            _activeProperty = null;
+                        });
+                    }
+                    _genericMenu.AddSeparator("");
+                    _genericMenu.AddItem(new GUIContent("Add new"), false, () =>
+                    {
+                        _editing = true;
+                    });
+                }
+
+                return _genericMenu;
+            }
+        }
+        private static SerializedProperty _activeProperty;
+        private static PropertyAttribute _activeAttribute;
+        private static bool _editing;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -33,12 +66,30 @@ namespace Utilities.Unity.Editor.StringLibrary
                 _strArray = StringLibrary.instance.Strings.ToArray();
             }
 
-            var result =
-                _strArray[
-                    EditorGUI.Popup(position, index, _strArray)];
-            var regex = (attribute as StringLibraryAttribute).RegexReplace;
-            var replace = (attribute as StringLibraryAttribute).Replace;
-            property.stringValue = Regex.Replace(result, regex, replace);
+            position = EditorGUI.PrefixLabel(position, label);
+            if (_editing)
+            {
+                var value = EditorGUI.DelayedTextField(position, property.stringValue);
+                if (value != property.stringValue)
+                {
+                    if (!StringLibrary.instance.Strings.Contains(value))
+                    {
+                        StringLibrary.instance.Strings.Add(value);
+                        EditorUtility.SetDirty(StringLibrary.instance);
+                        StringLibrary.instance.Save();
+                    }
+                    
+                    property.stringValue = value;
+                    property.serializedObject.ApplyModifiedProperties();
+                    _editing = false;
+                }
+            }
+            else if(GUI.Button(position, property.stringValue))
+            {
+                _activeAttribute = attribute;
+                _activeProperty = property;
+                GenericMenu.ShowAsContext();
+            }
         }
     }
 }

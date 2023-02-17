@@ -10,14 +10,15 @@ namespace medzumi.utilities.unity
         {
             PoolFactory.instance.SetPoolConfiguration(new GameObjectPoolConfiguration());
             PoolFactory.instance.SetPoolConfiguration(new ObjectPoolConfiguration());
-            PoolFactory.instance.SetPoolConfiguration(new TransformPoolConfiguration());
         }   
         
         private class ObjectPoolConfiguration : IPoolConfiguration<Object, Object>
         {
-            public Object Create(Object tObject)
+            public Object Create(Object tObject, IPoolReleaser<Object> poolReleaser)
             {
-                return Object.Instantiate(tObject);
+                var inst = Object.Instantiate(tObject);
+                inst.name = tObject.name;
+                return inst;
             }
 
             public void ResolveAction(Object tObject)
@@ -28,48 +29,21 @@ namespace medzumi.utilities.unity
             {
             }
         }
-        
-        private class TransformPoolConfiguration : IPoolConfiguration<Transform, Transform>
+
+        public class PoolHandler : MonoBehaviour
         {
-            public Transform Create(Transform tObject)
-            {
-                return Object.Instantiate(tObject);
-            }
-
-            public void ResolveAction(Transform tObject)
-            {
-                tObject.gameObject.SetActive(true);
-            }
-
-            public void ReleaseAction(Transform tObject)
-            {
-                tObject.gameObject.SetActive(false);
-            }
+            public IPoolReleaser<GameObject> Pool;
         }
-        
-        private class ComponentPoolConfiguration : IPoolConfiguration<Component, Component>
-        {
-            public Component Create(Component tObject)
-            {
-                return Object.Instantiate(tObject);
-            }
 
-            public void ResolveAction(Component tObject)
-            {
-                tObject.gameObject.SetActive(true);
-            }
-
-            public void ReleaseAction(Component tObject)
-            {
-                tObject.gameObject.SetActive(false);
-            }
-        }
-        
         private class GameObjectPoolConfiguration : IPoolConfiguration<GameObject, GameObject>
         {
-            public GameObject Create(GameObject tObject)
+            public GameObject Create(GameObject tObject, IPoolReleaser<GameObject> poolReleaser)
             {
-                return Object.Instantiate(tObject);
+                var obj = Object.Instantiate(tObject);
+                obj.AddComponent<PoolHandler>()
+                    .Pool = poolReleaser;
+                obj.name = tObject.name;
+                return obj;
             }
 
             public void ResolveAction(GameObject tObject)
@@ -80,6 +54,32 @@ namespace medzumi.utilities.unity
             public void ReleaseAction(GameObject tObject)
             {
                 tObject.SetActive(false);
+            }
+        }
+    }
+
+    public static class UnityPoolExtensions
+    {
+        public static IPool<T> GetPool<T>(this T tObject) where T : Component
+        {
+            var poolGo = tObject.gameObject.GetPool();
+            return new FakePool<T>(poolGo, () => poolGo.Get().GetComponent<T>(),
+                component => poolGo.Release(component.gameObject));
+        }
+
+        public static void Release<T>(this T tObject) where T : Component
+        {
+            if (tObject.TryGetComponent(out PoolConfigurationSetter.PoolHandler poolHandler))
+            {
+                poolHandler.Pool.Release(tObject.gameObject);
+            }
+        }
+
+        public static void Release(this GameObject gameObject)
+        {
+            if (gameObject.TryGetComponent(out PoolConfigurationSetter.PoolHandler poolHandler))
+            {
+                poolHandler.Pool.Release(gameObject.gameObject);
             }
         }
     }

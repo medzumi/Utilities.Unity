@@ -20,7 +20,7 @@ namespace Utilities.Unity.PropertyAttributes
 
         private readonly Stack<(int, Transform)> _stack = new Stack<(int, Transform)>();
 
-        public AutoBindAttribute(AutoBindType autoBindType, string name = null)
+        public AutoBindAttribute(AutoBindType autoBindType = AutoBindType.Self, string name = null)
         {
             Type = autoBindType;
             Name = name;
