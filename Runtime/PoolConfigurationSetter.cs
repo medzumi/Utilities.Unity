@@ -11,8 +11,8 @@ namespace medzumi.utilities.unity
         [Preserve]
         private static void Initialize()
         {
-            PoolFactory.instance.SetPoolConfiguration(new GameObjectPoolConfiguration());
-            PoolFactory.instance.SetPoolConfiguration(new ObjectPoolConfiguration());
+            PoolExtensions.PoolFactory.SetPoolConfiguration(new GameObjectPoolConfiguration());
+            PoolExtensions.PoolFactory.SetPoolConfiguration(new ObjectPoolConfiguration());
         }   
         
         private class ObjectPoolConfiguration : IPoolConfiguration<Object, Object>
