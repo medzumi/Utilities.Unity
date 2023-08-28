@@ -8,6 +8,7 @@ using Object = UnityEngine.Object;
 namespace Utilities.Unity.Editor.Buttons
 {
     [CustomEditor(typeof(Object), true)]
+    [CanEditMultipleObjects]
     public class ButtonDrawer : UnityEditor.Editor
     {
         private UnityEditor.Editor _editor;
@@ -23,7 +24,7 @@ namespace Utilities.Unity.Editor.Buttons
                     var attribute = methodInfo.GetCustomAttribute<ButtonAttribute>();
                     if (attribute != null && methodInfo.GetParameters().Length == 0)
                     {
-                        var key = string.IsNullOrWhiteSpace(attribute.Name) ? methodInfo.Name : attribute.Name; 
+                        var key = string.IsNullOrWhiteSpace(attribute.Name) ? methodInfo.Name : attribute.Name;
                         if (!_tuples.ContainsKey(key))
                         {
                             _tuples[key] = methodInfo;
