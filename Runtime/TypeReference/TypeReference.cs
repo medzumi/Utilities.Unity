@@ -8,6 +8,16 @@ namespace Utilities.Unity.TypeReference
     {
         [SerializeField] private string _assemblyQualifiedName;
 
+        public TypeReference()
+        {
+            _assemblyQualifiedName = String.Empty;
+        }
+
+        public TypeReference(Type type)
+        {
+            _assemblyQualifiedName = type.AssemblyQualifiedName;
+        }
+
         public Type Type
         {
             get;

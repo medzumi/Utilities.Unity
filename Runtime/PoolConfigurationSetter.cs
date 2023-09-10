@@ -1,4 +1,5 @@
 ﻿using medzumi.Utilities.Pooling;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Scripting;
 
@@ -9,6 +10,7 @@ namespace medzumi.utilities.unity
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         [Preserve]
+        [InitializeOnLoadMethod]
         private static void Initialize()
         {
             PoolExtensions.PoolFactory.SetPoolConfiguration(new GameObjectPoolConfiguration());

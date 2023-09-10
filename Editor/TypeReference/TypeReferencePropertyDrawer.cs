@@ -1,93 +1,51 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using medzumi.Utilities.CodeExtensions;
+using Utilities.Unity.Editor;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
-
+using UnityEngine.UIElements;
 
 namespace Utilities.Unity.TypeReference.Editor
 {
-    [CustomPropertyDrawer(typeof(TypeReferenceConstraintsAttribute))]
-    [CustomPropertyDrawer(typeof(TypeReference), true)]
-    public class TypeReferencePropertyDrawer : PropertyDrawer
+    public interface ITypeReferenceDrawer
     {
-        public static TypeReferenceConstraintsAttribute TypeReferenceConstraintsAttribute;
-        
+        float GetPropertyHeight(SerializedProperty serializedProperty, GUIContent guiContent);
+
+        void CustomGUI(Rect position, SerializedProperty serializedProperty, GUIContent guiContent,
+            TypeConstraints typeConstraints);
+    }
+
+    [CustomPropertyDrawer(typeof(TypeConstraints), true)]
+    public class TypeReferencePropertyDrawer : PropertyDrawer  
+    {
+        //Because can't create instance without failure when change default sprite for ScriptableObject implementation
+        public static Dictionary<SerializedPropertyType, ITypeReferenceDrawer>
+            SerializedPropertyTypeTypeReferenceDrawers = new Dictionary<SerializedPropertyType, ITypeReferenceDrawer>();
+
+        private float _height = EditorGUI.GetPropertyHeight(SerializedPropertyType.String, GUIContent.none);
+
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUI.GetPropertyHeight(SerializedPropertyType.Enum, label);     
+            if (SerializedPropertyTypeTypeReferenceDrawers.TryGetValue(property.propertyType, out var drawer))
+            {
+                return drawer.GetPropertyHeight(property, label);
+            }
+
+            return EditorGUI.GetPropertyHeight(SerializedPropertyType.String, label);
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            position = EditorGUI.PrefixLabel(position, label);
-            
-            var assemblyQualifiedProperty = property.FindPropertyRelative("_assemblyQualifiedName");
-            if (GUI.Button(position, Type.GetType(assemblyQualifiedProperty.stringValue)?.FullName))
+            if (SerializedPropertyTypeTypeReferenceDrawers.TryGetValue(property.propertyType, out var drawer))
             {
-                if (attribute is TypeReferenceConstraintsAttribute constraintsAttribute)
-                {
-                    var genericMenu = new GenericMenu();
-                    genericMenu.AddItem(new GUIContent("Null"), false, () =>
-                    {
-                        assemblyQualifiedProperty.stringValue = null;
-                    });
-                    
-                    foreach (var type in constraintsAttribute.GetMatchedTypes())
-                    {
-                        genericMenu.AddItem(new GUIContent(type.FullName.Replace('.','/')), false, () =>
-                        {
-                            assemblyQualifiedProperty.stringValue = type.AssemblyQualifiedName;
-                            assemblyQualifiedProperty.serializedObject.ApplyModifiedProperties();
-                        });
-                    }
-                    genericMenu.ShowAsContext();
-                }
-                else if (TypeReferenceConstraintsAttribute.IsNotNull())
-                {
-                    constraintsAttribute = TypeReferenceConstraintsAttribute;
-                    var genericMenu = new GenericMenu();
-                    genericMenu.AddItem(new GUIContent("Null"), false, () =>
-                    {
-                        assemblyQualifiedProperty.stringValue = null;
-                        assemblyQualifiedProperty.serializedObject.ApplyModifiedProperties();    
-                    });
-                    
-                    foreach (var type in constraintsAttribute.GetMatchedTypes())
-                    {
-                        genericMenu.AddItem(new GUIContent(type.FullName.Replace('.','/')), false, () =>
-                        {
-                            assemblyQualifiedProperty.stringValue = type.AssemblyQualifiedName;
-                            assemblyQualifiedProperty.serializedObject.ApplyModifiedProperties();
-                        });
-                    }
-                    genericMenu.ShowAsContext();
-                    TypeReferenceConstraintsAttribute = null;
-                }
-                else if (property.FindPropertyRelative("_assignableType") is { } assignableTypeProperty && Type.GetType(assignableTypeProperty.stringValue) is {} type)
-                {
-                    var genericMenu = new GenericMenu();
-                    genericMenu.AddItem(new GUIContent("Null"), false, () =>
-                    {
-                        assemblyQualifiedProperty.stringValue = null;
-                        assemblyQualifiedProperty.serializedObject.ApplyModifiedProperties();    
-                    });
-                    
-                    foreach (var VARIABLE in AppDomain.CurrentDomain
-                        .GetAssemblies()
-                        .SelectMany(assembly => assembly.GetTypes())
-                        .Where(x => type.IsAssignableFrom(x)))
-                    {
-                        genericMenu.AddItem(new GUIContent(VARIABLE.FullName.Replace('.', '/')), false, () =>
-                        {
-                            assemblyQualifiedProperty.stringValue = VARIABLE.AssemblyQualifiedName;
-                            assemblyQualifiedProperty.serializedObject.ApplyModifiedProperties();
-                        });
-                    }
-                    
-                    genericMenu.ShowAsContext();
-                    TypeReferenceConstraintsAttribute = null;
-                }
+                drawer.CustomGUI(position, property, label, attribute as TypeConstraints);
+            }
+            else
+            {
+                EditorGUI.LabelField(position, "NOT IMPLEMENTED");
             }
         }
     }
